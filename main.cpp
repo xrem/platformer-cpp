@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Game.h"
 
 using namespace sf;
 
@@ -13,40 +14,21 @@ const float delay = 1000 / FPS;
 int horizontal_speed = 0;
 
 int WinMain() {
+	Game game;
 	RenderWindow window(VideoMode(screen_width, screen_height), "Platformer game");
+	// TODO: Move to game;
 	Clock clock;
-	Texture backgroundTexture;
-	backgroundTexture.loadFromFile("C:\\Users\\XAdmin\\source\\repos\\PlatformerCPP\\фоновое изображение.png");
-	Texture characterMap;
-	characterMap.loadFromFile("C:\\Users\\XAdmin\\source\\repos\\PlatformerCPP\\персонаж.png");
-	Sprite background(backgroundTexture);
-	Sprite character(characterMap, IntRect(char_left_inital, 16 + padding + char_height, char_width, char_height));
-	character.setPosition(30, screen_height - char_height);
 
+	Sprite background(game.GetTextureByName("background"));
+	Sprite groundBlock(game.GetTextureByName("world"), IntRect(81, 1, 14, 14));
+	groundBlock.setPosition(30, screen_height - 14);
+	// 120% 
+	groundBlock.setScale(1.2, 1.2);
 
-	bool isPlaying = true;
-	while (isPlaying) {
+	while (game.GetIsPlayingStatus() == true) {
 		Event event;
 		while (window.pollEvent(event)) {
-			if (event.type == Event::EventType::Closed) {
-				isPlaying = false;
-			}
-			if (event.type == Event::EventType::KeyPressed) {
-				if (event.key.code == Keyboard::Key::Left) {
-					horizontal_speed = -1;
-				}
-				if (event.key.code == Keyboard::Key::Right) {
-					horizontal_speed = 1;
-				}
-			}
-			if (event.type == Event::EventType::KeyReleased) {
-				if (event.key.code == Keyboard::Key::Left && horizontal_speed < 0) {
-					horizontal_speed = 0;
-				}
-				if (event.key.code == Keyboard::Key::Right && horizontal_speed > 0) {
-					horizontal_speed = 0;
-				}
-			}
+			game.ProcessEvent(event);
 		}
 
 		if (clock.getElapsedTime().asMilliseconds() < delay) {
@@ -56,6 +38,8 @@ int WinMain() {
 			clock.restart();
 		}
 
+		// TODO: Move to character;
+		/*
 		// јнимаци€ персонажа
 		IntRect charRect = character.getTextureRect();
 		charRect.left += char_width + padding;
@@ -69,9 +53,11 @@ int WinMain() {
 		character.setTextureRect(charRect);
 
 		character.move(horizontal_speed * 4, 0);
+		*/
 
 		window.draw(background);
-		window.draw(character);
+		game.Render(window);
+		window.draw(groundBlock);
 		window.display();
 	}
 
