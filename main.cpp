@@ -16,6 +16,11 @@ int horizontal_speed = 0;
 int WinMain() {
 	Game game;
 	RenderWindow window(VideoMode(screen_width, screen_height), "Platformer game");
+	View camera(FloatRect(
+		0.f, // Иначальный оступ слева
+		screen_height / 3.0f * 2.0f, // Иначальный отступ сверх
+		screen_width / 3.0f, // Ширина
+		screen_height / 3.0f)); // Высота
 	// TODO: Move to game;
 	Clock clock;
 
@@ -56,8 +61,9 @@ int WinMain() {
 		*/
 
 		window.draw(background);
-		game.Render(window);
+		game.Render(window, camera);
 		window.draw(groundBlock);
+		window.setView(camera);
 		window.display();
 	}
 

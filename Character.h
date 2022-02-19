@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Game.h"
 
 namespace CharacterConstants {
     const int padding = 19;
@@ -10,14 +9,20 @@ namespace CharacterConstants {
     const int char_height = 66;
 }
 
+class Game;
+
 class Character :
     public GameObject
 {
 private:
     sf::Sprite sprite;
+    int horizontal_speed;
 public:
     Character(Game* game);
     virtual unsigned int GetZIndex() override final;
     virtual const sf::Sprite& GetSprite() override final;
+    virtual void UpdateState() override final;
+    void SetHorizontalSpeed(int speed);
+    int GetHorizontalSpeed();
 };
 
