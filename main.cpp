@@ -25,10 +25,6 @@ int WinMain() {
 	Clock clock;
 
 	Sprite background(game.GetTextureByName("background"));
-	Sprite groundBlock(game.GetTextureByName("world"), IntRect(81, 1, 14, 14));
-	groundBlock.setPosition(30, screen_height - 14);
-	// 120% 
-	groundBlock.setScale(1.2, 1.2);
 
 	while (game.GetIsPlayingStatus() == true) {
 		Event event;
@@ -62,7 +58,6 @@ int WinMain() {
 
 		window.draw(background);
 		game.Render(window, camera);
-		window.draw(groundBlock);
 		window.setView(camera);
 		window.display();
 	}

@@ -19,7 +19,7 @@ const sf::Sprite& Brick::GetSprite()
 	return this->sprite;
 }
 
-void Brick::UpdateState()
+void Brick::UpdateState(const std::vector<GameObject*>& objects)
 {
 	// Does nothing
 }

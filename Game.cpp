@@ -28,8 +28,16 @@ Game::Game()
 	// Create objects
 	this->character_object = new Character(this);
 	this->objects.push_back(this->character_object);
-	for (int x = 0; x <= 800; x += 10) {
-		this->objects.push_back(new Brick(this, x, rand() % 600));
+	int counter = 0;
+	for (int x = 0; x <= 800; x += 14) {
+		counter++;
+		if (counter <= 1 || counter == 6) {
+			if (counter == 6) {
+				counter = 0;
+			}
+			continue;
+		}
+		this->objects.push_back(new Brick(this, x, 585));
 	}
 
 	this->isPlaying = true;
@@ -38,7 +46,7 @@ Game::Game()
 void Game::Render(sf::RenderWindow& window, sf::View& camera)
 {
 	for (GameObject* object : this->objects) {
-		object->UpdateState();
+		object->UpdateState(this->objects);
 	}
 	for (unsigned int zIndex = 0; zIndex <= 3; zIndex++) {
 		for (GameObject* object : this->objects) {
@@ -74,6 +82,9 @@ void Game::ProcessEvent(const Event& event)
 		}
 		if (event.key.code == Keyboard::Key::Right) {
 			this->character_object->SetHorizontalSpeed(1);
+		}
+		if (event.key.code == Keyboard::Key::Up) {
+			this->character_object->TryToJump();
 		}
 	}
 	if (event.type == Event::EventType::KeyReleased) {
