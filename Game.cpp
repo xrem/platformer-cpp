@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "Character.h"
 #include "Brick.h"
+#include "LevelLoader.h"
+#include <queue>
+#include <sstream>
 
 using namespace std;
 using namespace sf;
@@ -26,6 +29,7 @@ Game::Game()
 	srand(NULL);
 
 	// Create objects
+	/*
 	this->character_object = new Character(this);
 	this->objects.push_back(this->character_object);
 	int counter = 0;
@@ -39,6 +43,47 @@ Game::Game()
 		}
 		this->objects.push_back(new Brick(this, x, 585));
 	}
+	*/
+	stringstream ss;
+	queue<string>* levelObjects = LevelLoader::load_level(basePath, "level0");
+	while (levelObjects->size() > 0) {
+		string object_type = levelObjects->front();
+		levelObjects->pop();
+		if (object_type == "Character")
+		{
+			ss << levelObjects->front();
+			levelObjects->pop();
+			float x;
+			ss >> x;
+			ss.clear();
+			ss << levelObjects->front();
+			levelObjects->pop();
+			float y;
+			ss >> y;
+			ss.clear();
+			this->character_object = new Character(this, x, y);
+			this->objects.push_back(this->character_object);
+		}
+		else if (object_type == "Brick")
+		{
+			ss << levelObjects->front();
+			levelObjects->pop();
+			float y;
+			ss >> y;
+			ss.clear();
+			ss << levelObjects->front();
+			levelObjects->pop();
+			float x;
+			ss >> x;
+			ss.clear();
+			this->objects.push_back(new Brick(this, x, y));
+		}
+		else {
+			throw new exception("Unsupported object type");
+		}
+	}
+	delete levelObjects;
+	levelObjects = nullptr;
 
 	this->isPlaying = true;
 }

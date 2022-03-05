@@ -5,14 +5,14 @@
 using namespace sf;
 using namespace CharacterConstants;
 
-Character::Character(Game* game)
+Character::Character(Game* game, float x, float y)
 {
 	this->want_to_jump = false;
 	this->horizontal_speed = 0;
 	this->vertical_speed = 0;
 	this->sprite = sf::Sprite(game->GetTextureByName("character"), IntRect(char_left_inital, 16 + padding + char_height, char_width, char_height));
 	this->sprite.setScale(0.7, 0.7);
-	this->sprite.setPosition(30, 600 - char_height);
+	this->sprite.setPosition(x, y);
 }
 
 unsigned int Character::GetZIndex() {
